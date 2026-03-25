@@ -1,0 +1,2046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KSRTC Yatra — Kerala Budget Travel Discovery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,800;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #1a3d2b;
+    --green-mid: #2d6a47;
+    --green-light: #4caf74;
+    --green-pale: #e8f5ec;
+    --amber: #e07b39;
+    --amber-light: #f5a623;
+    --amber-pale: #fff3e0;
+    --teal: #1e6b72;
+    --teal-light: #4a9ea6;
+    --cream: #faf8f3;
+    --text-dark: #1a1a1a;
+    --text-mid: #4a4a4a;
+    --text-soft: #888;
+    --white: #ffffff;
+    --shadow-sm: 0 2px 12px rgba(26,61,43,0.10);
+    --shadow-md: 0 6px 28px rgba(26,61,43,0.16);
+    --shadow-lg: 0 16px 48px rgba(26,61,43,0.22);
+    --radius: 16px;
+    --radius-lg: 24px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    max-width: 430px;
+    margin: 0 auto;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, .serif { font-family: 'Fraunces', serif; }
+
+  /* ===== GLOBAL NAV BAR ===== */
+  .nav-bar {
+    background: var(--green-deep);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-logo {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    color: var(--white);
+    font-weight: 800;
+    letter-spacing: -0.3px;
+  }
+  .nav-logo span { color: var(--amber-light); }
+  .nav-tagline {
+    font-size: 9px;
+    color: rgba(255,255,255,0.55);
+    display: block;
+    margin-top: 1px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .nav-icon {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    border: none;
+    color: white;
+    font-size: 16px;
+  }
+
+  /* ===== PAGE SWITCHER (demo tabs) ===== */
+  .page-switcher {
+    display: flex;
+    background: var(--green-deep);
+    padding: 0 20px 14px;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .page-switcher::-webkit-scrollbar { display: none; }
+  .ps-btn {
+    padding: 7px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+    border: 1.5px solid rgba(255,255,255,0.25);
+    background: transparent;
+    color: rgba(255,255,255,0.7);
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+  .ps-btn.active {
+    background: var(--amber);
+    border-color: var(--amber);
+    color: white;
+  }
+
+  /* ===== PAGES ===== */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ===== HOMEPAGE ===== */
+
+  /* Hero */
+  .hero {
+    position: relative;
+    height: 390px;
+    overflow: hidden;
+  }
+  .hero-bg {
+    width: 100%; height: 100%;
+    background: linear-gradient(
+      160deg,
+      #0f2e1a 0%,
+      #1a4d2e 30%,
+      #2d7a42 55%,
+      #4a9a5e 75%,
+      #6db882 90%,
+      #a8d5b0 100%
+    );
+    position: absolute; inset: 0;
+  }
+  /* Decorative hills */
+  .hero-hills {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 160px;
+  }
+  .hero-hills svg { width: 100%; height: 100%; }
+  /* Misty overlay */
+  .hero-mist {
+    position: absolute;
+    bottom: 80px; left: 0; right: 0;
+    height: 80px;
+    background: linear-gradient(to top, rgba(255,255,255,0.08), transparent);
+  }
+  .hero-content {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 0 24px 28px;
+    background: linear-gradient(to top, rgba(15,30,20,0.88) 0%, rgba(15,30,20,0.4) 60%, transparent 100%);
+    padding-top: 70px;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+  }
+  .hero-badge::before { content: "🚌"; font-size: 13px; }
+  .hero h1 {
+    font-size: 30px;
+    color: white;
+    line-height: 1.12;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--amber-light);
+  }
+  .hero p {
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--amber);
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 13px 22px;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(224,123,57,0.5);
+    cursor: pointer;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .hero-cta::after { content: "→"; font-size: 16px; }
+
+  /* Stars / tree decoration */
+  .hero-deco {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .star {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 50%;
+  }
+
+  /* Discovery Bar */
+  .discovery-bar {
+    margin: -1px 0 0;
+    background: white;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    padding: 24px 20px 16px;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    z-index: 10;
+  }
+  .discovery-bar h2 {
+    font-size: 17px;
+    margin-bottom: 4px;
+    color: var(--green-deep);
+  }
+  .discovery-bar .sub {
+    font-size: 12px;
+    color: var(--text-soft);
+    margin-bottom: 16px;
+  }
+  .disc-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .disc-field {
+    background: var(--cream);
+    border-radius: 12px;
+    padding: 12px 14px;
+    border: 1.5px solid rgba(45,106,71,0.12);
+  }
+  .disc-field label {
+    display: block;
+    font-size: 9.5px;
+    font-weight: 600;
+    color: var(--green-mid);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .disc-field select, .disc-field input {
+    background: none;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text-dark);
+    width: 100%;
+    outline: none;
+    cursor: pointer;
+  }
+  .disc-full {
+    grid-column: 1 / -1;
+  }
+  .disc-search-btn {
+    width: 100%;
+    background: var(--green-mid);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 4px;
+    transition: background 0.2s;
+  }
+  .disc-search-btn:hover { background: var(--green-deep); }
+
+  /* Section Headers */
+  .section {
+    padding: 24px 20px 8px;
+    background: var(--cream);
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .section-header h2 {
+    font-size: 20px;
+    color: var(--green-deep);
+  }
+  .see-all {
+    font-size: 12px;
+    color: var(--green-mid);
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    background: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* Trip Cards */
+  .trip-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 0 20px 20px;
+  }
+  .trip-card {
+    background: white;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .trip-card:active { transform: scale(0.98); }
+  .trip-card-img {
+    height: 160px;
+    position: relative;
+    overflow: hidden;
+  }
+  .tc-img-bg {
+    width: 100%; height: 100%;
+    position: absolute; inset: 0;
+  }
+  .tc-tag {
+    position: absolute;
+    top: 12px; left: 12px;
+    background: var(--amber);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .tc-tag.popular { background: #c0392b; }
+  .tc-tag.budget { background: var(--green-mid); }
+  .tc-tag.weekend { background: var(--teal); }
+  .tc-price-badge {
+    position: absolute;
+    bottom: 12px; right: 12px;
+    background: rgba(15,30,20,0.85);
+    backdrop-filter: blur(8px);
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 10px;
+  }
+  .trip-card-body {
+    padding: 14px 16px 16px;
+  }
+  .tc-destination {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--green-deep);
+    margin-bottom: 4px;
+  }
+  .tc-meta {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+  .tc-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--text-soft);
+  }
+  .tc-depot {
+    font-size: 11.5px;
+    color: var(--green-mid);
+    font-weight: 600;
+    background: var(--green-pale);
+    padding: 3px 9px;
+    border-radius: 6px;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+  .tc-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .btn-secondary {
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 12.5px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    text-align: center;
+    border: 1.5px solid rgba(45,106,71,0.25);
+    background: transparent;
+    color: var(--green-mid);
+    transition: all 0.2s;
+  }
+  .btn-primary {
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 12.5px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    text-align: center;
+    background: var(--green-mid);
+    color: white;
+    border: none;
+    transition: all 0.2s;
+  }
+  .btn-primary:hover { background: var(--green-deep); }
+
+  /* Notify Banner */
+  .notify-banner {
+    margin: 4px 20px 20px;
+    background: linear-gradient(135deg, var(--green-deep) 0%, var(--teal) 100%);
+    border-radius: var(--radius);
+    padding: 20px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .notify-banner::before {
+    content: "🔔";
+    position: absolute;
+    right: 16px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 42px;
+    opacity: 0.18;
+  }
+  .notify-banner h3 {
+    font-size: 16px;
+    margin-bottom: 4px;
+    font-family: 'Fraunces', serif;
+  }
+  .notify-banner p {
+    font-size: 12px;
+    opacity: 0.78;
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+  .notify-input-row {
+    display: flex;
+    gap: 8px;
+  }
+  .notify-input {
+    flex: 1;
+    background: rgba(255,255,255,0.15);
+    border: 1.5px solid rgba(255,255,255,0.25);
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    outline: none;
+  }
+  .notify-input::placeholder { color: rgba(255,255,255,0.5); }
+  .notify-btn {
+    background: var(--amber);
+    border: none;
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: white;
+    font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  /* How it works strip */
+  .how-strip {
+    margin: 4px 20px 20px;
+    background: var(--amber-pale);
+    border-radius: var(--radius);
+    padding: 18px;
+    border-left: 4px solid var(--amber);
+  }
+  .how-strip h3 {
+    font-size: 13px;
+    color: var(--amber);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+  }
+  .how-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .how-step:last-child { margin-bottom: 0; }
+  .how-num {
+    width: 22px; height: 22px;
+    background: var(--amber);
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .how-step p { font-size: 13px; color: var(--text-mid); line-height: 1.4; }
+  .how-step strong { color: var(--text-dark); }
+
+  /* ===== LISTING PAGE ===== */
+  .filter-bar {
+    background: white;
+    padding: 16px 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+  .filter-row {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .filter-row::-webkit-scrollbar { display: none; }
+  .filter-chip {
+    white-space: nowrap;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 12.5px;
+    font-weight: 500;
+    border: 1.5px solid rgba(45,106,71,0.2);
+    background: transparent;
+    color: var(--text-mid);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .filter-chip.active {
+    background: var(--green-mid);
+    border-color: var(--green-mid);
+    color: white;
+  }
+  .filter-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-soft);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .results-header {
+    padding: 16px 20px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .results-count {
+    font-size: 13px;
+    color: var(--text-soft);
+  }
+  .results-count strong { color: var(--text-dark); }
+  .sort-btn {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--green-mid);
+    background: var(--green-pale);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* Compact listing cards */
+  .list-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 20px 24px;
+  }
+  .list-card {
+    background: white;
+    border-radius: 14px;
+    display: flex;
+    gap: 0;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+  }
+  .lc-img {
+    width: 110px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .lc-img-bg {
+    width: 100%; height: 100%;
+    position: absolute; inset: 0;
+  }
+  .lc-body {
+    flex: 1;
+    padding: 12px 14px;
+  }
+  .lc-tag {
+    font-size: 9.5px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 5px;
+    display: inline-block;
+  }
+  .lc-tag.hill { background: #e8f5ec; color: var(--green-mid); }
+  .lc-tag.beach { background: #e0f7fa; color: var(--teal); }
+  .lc-tag.pilgrim { background: #fff3e0; color: #e65100; }
+  .lc-title {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--green-deep);
+    margin-bottom: 4px;
+  }
+  .lc-depot {
+    font-size: 11px;
+    color: var(--text-soft);
+    margin-bottom: 8px;
+  }
+  .lc-depot strong { color: var(--green-mid); }
+  .lc-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .lc-price {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--green-deep);
+  }
+  .lc-price span { font-size: 11px; color: var(--text-soft); font-weight: 400; }
+  .lc-dur {
+    font-size: 11px;
+    color: var(--text-soft);
+  }
+
+  .filter-panel {
+    background: white;
+    border-radius: 16px;
+    margin: 0 20px 16px;
+    padding: 18px;
+    box-shadow: var(--shadow-sm);
+  }
+  .filter-panel h3 {
+    font-size: 14px;
+    color: var(--green-deep);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .budget-range {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .budget-range input[type="range"] {
+    flex: 1;
+    accent-color: var(--green-mid);
+  }
+  .budget-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-soft);
+  }
+  .filter-chips-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 10px;
+  }
+  .fc-chip {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1.5px solid rgba(45,106,71,0.18);
+    background: transparent;
+    color: var(--text-mid);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .fc-chip.active {
+    background: var(--green-pale);
+    border-color: var(--green-mid);
+    color: var(--green-deep);
+    font-weight: 600;
+  }
+
+  /* ===== TRIP DETAIL PAGE ===== */
+  .detail-hero {
+    height: 280px;
+    position: relative;
+    overflow: hidden;
+  }
+  .detail-hero-bg {
+    width: 100%; height: 100%;
+    position: absolute; inset: 0;
+  }
+  .detail-back {
+    position: absolute;
+    top: 16px; left: 16px;
+    width: 38px; height: 38px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(255,255,255,0.3);
+    cursor: pointer;
+    font-size: 18px;
+    color: white;
+    border: none;
+  }
+  .detail-share {
+    position: absolute;
+    top: 16px; right: 16px;
+    width: 38px; height: 38px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(255,255,255,0.3);
+    cursor: pointer;
+    font-size: 16px;
+    color: white;
+    border: none;
+  }
+  .detail-hero-content {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 60px 20px 20px;
+    background: linear-gradient(to top, rgba(10,25,15,0.9) 0%, transparent 100%);
+  }
+  .detail-hero-content h1 {
+    font-size: 24px;
+    color: white;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .detail-pills {
+    display: flex;
+    gap: 8px;
+  }
+  .detail-pill {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 12px;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.25);
+  }
+
+  /* Price strip */
+  .price-strip {
+    background: white;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .ps-price {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--green-deep);
+  }
+  .ps-price sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text-soft);
+    vertical-align: unset;
+    margin-left: 2px;
+  }
+  .ps-badge {
+    background: var(--green-pale);
+    border: 1px solid rgba(45,106,71,0.2);
+    border-radius: 8px;
+    padding: 8px 14px;
+    text-align: center;
+  }
+  .ps-badge .val {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--green-deep);
+    display: block;
+  }
+  .ps-badge .lbl {
+    font-size: 10px;
+    color: var(--text-soft);
+    display: block;
+  }
+
+  /* Detail sections */
+  .detail-section {
+    background: white;
+    margin: 10px 0 0;
+    padding: 20px;
+  }
+  .detail-section h2 {
+    font-size: 16px;
+    color: var(--green-deep);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .detail-section h2::before {
+    content: "";
+    width: 3px; height: 18px;
+    background: var(--amber);
+    border-radius: 2px;
+    display: inline-block;
+  }
+
+  /* How This Trip Works */
+  .how-works-box {
+    background: var(--cream);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1.5px solid rgba(45,106,71,0.12);
+  }
+  .hw-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+  .hw-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .hw-row:first-child { padding-top: 0; }
+  .hw-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+  }
+  .hw-icon.green { background: var(--green-pale); }
+  .hw-icon.amber { background: var(--amber-pale); }
+  .hw-icon.blue { background: #e3f2fd; }
+  .hw-text label {
+    font-size: 10px;
+    color: var(--text-soft);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .hw-text p {
+    font-size: 14px;
+    color: var(--text-dark);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  .hw-text .hw-sub {
+    font-size: 11.5px;
+    color: var(--text-soft);
+    margin-top: 2px;
+  }
+
+  /* Booking options */
+  .booking-opts {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .booking-opt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--cream);
+    border-radius: 10px;
+    padding: 12px;
+    border: 1.5px solid rgba(45,106,71,0.1);
+  }
+  .booking-opt-icon {
+    font-size: 20px;
+    width: 34px;
+    text-align: center;
+  }
+  .booking-opt-text label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .booking-opt-text p {
+    font-size: 13.5px;
+    color: var(--text-dark);
+    font-weight: 500;
+  }
+  .booking-opt-arrow {
+    margin-left: auto;
+    color: var(--green-mid);
+    font-size: 18px;
+  }
+
+  /* Itinerary */
+  .itinerary {
+    position: relative;
+    padding-left: 28px;
+  }
+  .itinerary::before {
+    content: "";
+    position: absolute;
+    left: 10px; top: 8px; bottom: 8px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--green-mid), var(--amber));
+    border-radius: 2px;
+  }
+  .itin-item {
+    position: relative;
+    margin-bottom: 18px;
+  }
+  .itin-item:last-child { margin-bottom: 0; }
+  .itin-dot {
+    position: absolute;
+    left: -23px; top: 3px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--green-mid);
+    border: 2px solid white;
+    box-shadow: 0 0 0 2px var(--green-mid);
+  }
+  .itin-item:first-child .itin-dot { background: var(--amber); box-shadow: 0 0 0 2px var(--amber); }
+  .itin-item:last-child .itin-dot { background: var(--green-deep); box-shadow: 0 0 0 2px var(--green-deep); }
+  .itin-time {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--green-mid);
+    margin-bottom: 2px;
+  }
+  .itin-item:first-child .itin-time { color: var(--amber); }
+  .itin-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 2px;
+  }
+  .itin-desc {
+    font-size: 12px;
+    color: var(--text-soft);
+    line-height: 1.4;
+  }
+
+  /* Highlights */
+  .highlights-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .highlight-chip {
+    background: var(--cream);
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1.5px solid rgba(0,0,0,0.05);
+  }
+  .hl-icon { font-size: 22px; }
+  .hl-text {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--text-dark);
+    line-height: 1.3;
+  }
+
+  /* Who is it for */
+  .who-list { list-style: none; }
+  .who-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 0;
+    font-size: 13.5px;
+    color: var(--text-mid);
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+  }
+  .who-item:last-child { border-bottom: none; }
+  .who-icon { font-size: 16px; width: 20px; text-align: center; }
+
+  /* Trust section */
+  .trust-box {
+    background: var(--green-pale);
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .trust-count {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--green-deep);
+    white-space: nowrap;
+  }
+  .trust-text {
+    font-size: 13px;
+    color: var(--text-mid);
+    line-height: 1.4;
+  }
+  .trust-photos {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .trust-photo {
+    width: 72px; height: 56px;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .trust-photo-bg {
+    width: 100%; height: 100%;
+    position: absolute; inset: 0;
+  }
+
+  /* CTA Section */
+  .cta-section {
+    background: white;
+    margin: 10px 0 0;
+    padding: 20px;
+  }
+  .cta-primary-btn {
+    width: 100%;
+    background: var(--green-mid);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    padding: 16px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.2s;
+  }
+  .cta-primary-btn:hover { background: var(--green-deep); }
+  .cta-secondary-btn {
+    width: 100%;
+    background: transparent;
+    color: var(--green-mid);
+    border: 1.5px solid rgba(45,106,71,0.3);
+    border-radius: 14px;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .cta-whatsapp-btn {
+    width: 100%;
+    background: #25D366;
+    color: white;
+    border: none;
+    border-radius: 14px;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .cta-note {
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-soft);
+    margin-top: 14px;
+    line-height: 1.5;
+  }
+
+  /* Notify in detail */
+  .notify-detail {
+    background: linear-gradient(135deg, #1a3d2b 0%, #1e6b72 100%);
+    border-radius: 14px;
+    padding: 16px;
+    margin-top: 12px;
+  }
+  .notify-detail p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+  .notify-detail strong { color: white; }
+
+  /* Bottom pad */
+  .bottom-pad { height: 80px; }
+
+  /* Bottom Nav */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%; transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    background: white;
+    border-top: 1px solid rgba(0,0,0,0.08);
+    display: flex;
+    padding: 10px 0 16px;
+    z-index: 99;
+  }
+  .bn-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .bn-icon { font-size: 20px; line-height: 1; }
+  .bn-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-soft);
+  }
+  .bn-item.active .bn-label { color: var(--green-mid); }
+  .bn-item.active .bn-icon { filter: none; }
+
+  /* Divider */
+  .divider {
+    height: 8px;
+    background: rgba(0,0,0,0.04);
+  }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .page.active .hero-content,
+  .page.active .discovery-bar,
+  .page.active .trip-card {
+    animation: fadeUp 0.4s ease both;
+  }
+  .page.active .trip-card:nth-child(2) { animation-delay: 0.1s; }
+  .page.active .trip-card:nth-child(3) { animation-delay: 0.2s; }
+
+  /* Demo label */
+  .demo-label {
+    background: rgba(224,123,57,0.12);
+    border-left: 3px solid var(--amber);
+    margin: 6px 20px;
+    padding: 8px 12px;
+    border-radius: 0 8px 8px 0;
+    font-size: 11px;
+    color: var(--amber);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV BAR -->
+<nav class="nav-bar">
+  <div>
+    <div class="nav-logo">KSRTC <span>Yatra</span></div>
+    <span class="nav-tagline">Kerala Budget Travel Discovery</span>
+  </div>
+  <button class="nav-icon">☰</button>
+</nav>
+
+<!-- PAGE SWITCHER (demo navigation) -->
+<div class="page-switcher">
+  <button class="ps-btn active" onclick="showPage('home', this)">🏠 Homepage</button>
+  <button class="ps-btn" onclick="showPage('listing', this)">🔍 Browse Trips</button>
+  <button class="ps-btn" onclick="showPage('detail', this)">📄 Trip Detail</button>
+</div>
+
+<!-- ========================= -->
+<!--      HOME PAGE            -->
+<!-- ========================= -->
+<div id="page-home" class="page active">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-deco">
+      <div class="star" style="top:12%;left:8%;"></div>
+      <div class="star" style="top:18%;left:75%;width:3px;height:3px;"></div>
+      <div class="star" style="top:8%;left:55%;"></div>
+      <div class="star" style="top:22%;left:30%;"></div>
+    </div>
+    <!-- SVG hills -->
+    <div class="hero-hills">
+      <svg viewBox="0 0 430 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,120 C60,60 120,100 180,70 C240,40 280,90 340,65 C380,48 410,80 430,60 L430,160 L0,160 Z" fill="#0f2e1a" opacity="0.6"/>
+        <path d="M0,140 C40,100 90,130 150,105 C210,80 260,120 320,95 C370,75 400,110 430,90 L430,160 L0,160 Z" fill="#1a4d2e" opacity="0.8"/>
+        <path d="M0,155 C50,130 100,150 160,135 C220,120 280,145 340,130 C380,120 410,140 430,130 L430,160 L0,160 Z" fill="#2d7a42" opacity="0.9"/>
+        <!-- Trees -->
+        <polygon points="55,132 65,105 75,132" fill="#1a4d2e"/>
+        <polygon points="62,120 70,98 78,120" fill="#2d7a42"/>
+        <polygon points="340,118 352,90 364,118" fill="#1a4d2e"/>
+        <polygon points="348,108 358,83 368,108" fill="#2d7a42"/>
+        <polygon points="160,128 170,104 180,128" fill="#1a4d2e"/>
+        <!-- Elephant silhouette (tiny) -->
+        <ellipse cx="250" cy="148" rx="14" ry="7" fill="#0f2e1a" opacity="0.7"/>
+        <rect x="244" y="150" width="4" height="8" rx="2" fill="#0f2e1a" opacity="0.7"/>
+        <rect x="250" y="150" width="4" height="8" rx="2" fill="#0f2e1a" opacity="0.7"/>
+        <rect x="257" y="150" width="3" height="7" rx="1.5" fill="#0f2e1a" opacity="0.7"/>
+        <ellipse cx="258" cy="144" rx="6" ry="5" fill="#0f2e1a" opacity="0.7"/>
+        <path d="M264,144 C268,140 270,150 266,152" stroke="#0f2e1a" stroke-width="2" fill="none" opacity="0.7"/>
+        <!-- Moon -->
+        <path d="M385,25 A14,14 0 1 1 385,25.001" fill="none"/>
+        <circle cx="390" cy="28" r="10" fill="rgba(255,255,200,0.15)"/>
+        <circle cx="394" cy="25" r="9" fill="#1a4d2e" opacity="0.6"/>
+      </svg>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">KSRTC Official Partner Program</div>
+      <h1>Explore Kerala<br>for under <em>₹2000</em></h1>
+      <p>Discover budget trips you didn't know existed — straight from KSRTC depots near you.</p>
+      <button class="hero-cta" onclick="showPage('listing', document.querySelectorAll('.ps-btn')[1])">Find Trips Near You</button>
+    </div>
+  </div>
+
+  <!-- Discovery Bar -->
+  <div class="discovery-bar">
+    <h2>Find Your Trip</h2>
+    <p class="sub">Tell us a bit — we'll show what's available near you</p>
+    <div class="disc-row">
+      <div class="disc-field">
+        <label>📍 Starting from</label>
+        <select>
+          <option>Kochi</option>
+          <option>Trivandrum</option>
+          <option>Thrissur</option>
+          <option>Kozhikode</option>
+          <option>Pathanamthitta</option>
+        </select>
+      </div>
+      <div class="disc-field">
+        <label>🏔️ Trip Type</label>
+        <select>
+          <option>All types</option>
+          <option>Hill Station</option>
+          <option>Beach</option>
+          <option>Forest / Nature</option>
+          <option>Pilgrimage</option>
+        </select>
+      </div>
+    </div>
+    <div class="disc-row">
+      <div class="disc-field">
+        <label>📅 Duration</label>
+        <select>
+          <option>Any</option>
+          <option>1 Day</option>
+          <option>2 Days</option>
+        </select>
+      </div>
+      <div class="disc-field">
+        <label>💰 Max Budget</label>
+        <select>
+          <option>₹2000</option>
+          <option>₹500</option>
+          <option>₹1000</option>
+          <option>₹1500</option>
+        </select>
+      </div>
+    </div>
+    <button class="disc-search-btn" onclick="showPage('listing', document.querySelectorAll('.ps-btn')[1])">🔍 &nbsp;Show Matching Trips</button>
+  </div>
+
+  <!-- How It Works -->
+  <div class="divider"></div>
+  <div class="section">
+    <div class="section-header">
+      <h2>How it works</h2>
+    </div>
+  </div>
+  <div class="how-strip" style="margin-top:0;">
+    <h3>Simple 3-step process</h3>
+    <div class="how-step">
+      <div class="how-num">1</div>
+      <p><strong>Discover trips</strong> from KSRTC depots near you — no WhatsApp digging needed.</p>
+    </div>
+    <div class="how-step">
+      <div class="how-num">2</div>
+      <p><strong>Understand your trip</strong> — timings, route, what to expect, and who it's for.</p>
+    </div>
+    <div class="how-step">
+      <div class="how-num">3</div>
+      <p><strong>Book where you want</strong> — KSRTC portal or directly at your nearest depot.</p>
+    </div>
+  </div>
+
+  <!-- Featured Trips -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Featured Trips</h2>
+      <button class="see-all" onclick="showPage('listing', document.querySelectorAll('.ps-btn')[1])">See all →</button>
+    </div>
+  </div>
+
+  <div class="trip-cards">
+
+    <!-- Card 1: Gavi -->
+    <div class="trip-card" onclick="showPage('detail', document.querySelectorAll('.ps-btn')[2])">
+      <div class="trip-card-img">
+        <div class="tc-img-bg">
+          <svg width="100%" height="100%" viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#0d3320"/>
+                <stop offset="50%" stop-color="#1f6b38"/>
+                <stop offset="100%" stop-color="#4a9a60"/>
+              </linearGradient>
+            </defs>
+            <rect width="400" height="160" fill="url(#g1)"/>
+            <!-- Misty hills -->
+            <path d="M0,100 C60,50 120,80 180,55 C240,30 300,70 360,45 C390,32 410,55 400,55 L400,160 L0,160Z" fill="#0d2a18" opacity="0.7"/>
+            <path d="M0,130 C80,100 160,120 240,105 C310,92 370,115 400,100 L400,160 L0,160Z" fill="#1a4d2e" opacity="0.8"/>
+            <!-- Trees -->
+            <polygon points="30,130 40,105 50,130" fill="#0d2a18"/>
+            <polygon points="38,118 46,95 54,118" fill="#1a4d2e"/>
+            <polygon points="200,120 210,96 220,120" fill="#0d2a18"/>
+            <polygon points="290,125 300,100 310,125" fill="#0d2a18"/>
+            <!-- Mist -->
+            <rect x="0" y="80" width="400" height="30" fill="rgba(255,255,255,0.06)"/>
+            <!-- Lake reflection -->
+            <ellipse cx="150" cy="148" rx="80" ry="12" fill="rgba(100,180,140,0.3)"/>
+          </svg>
+        </div>
+        <div class="tc-tag popular">⭐ Popular</div>
+        <div class="tc-price-badge">₹ 850</div>
+      </div>
+      <div class="trip-card-body">
+        <div class="tc-destination">Gavi Forest</div>
+        <div class="tc-depot">🚌 Pathanamthitta Depot</div>
+        <div class="tc-meta">
+          <span class="tc-meta-item">📅 1 Day</span>
+          <span class="tc-meta-item">🌿 Nature / Wildlife</span>
+          <span class="tc-meta-item">⏰ 5:00 AM</span>
+        </div>
+        <div class="tc-actions">
+          <button class="btn-secondary">View Details</button>
+          <button class="btn-primary" onclick="showPage('detail', document.querySelectorAll('.ps-btn')[2])">How to Go →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: Vagamon -->
+    <div class="trip-card">
+      <div class="trip-card-img">
+        <div class="tc-img-bg">
+          <svg width="100%" height="100%" viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#1a2a4a"/>
+                <stop offset="60%" stop-color="#3a6b8a"/>
+                <stop offset="100%" stop-color="#7ab5c8"/>
+              </linearGradient>
+            </defs>
+            <rect width="400" height="160" fill="url(#g2)"/>
+            <!-- Clouds -->
+            <ellipse cx="80" cy="40" rx="45" ry="20" fill="rgba(255,255,255,0.12)"/>
+            <ellipse cx="320" cy="30" rx="55" ry="18" fill="rgba(255,255,255,0.1)"/>
+            <!-- Rolling green hills -->
+            <path d="M0,90 C40,60 90,80 140,62 C190,44 230,72 280,55 C330,38 380,65 400,55 L400,160 L0,160Z" fill="#1e4d2b"/>
+            <path d="M0,120 C60,100 120,115 180,100 C240,85 300,108 360,95 C390,88 400,100 400,95 L400,160 L0,160Z" fill="#2d6a3e"/>
+            <!-- Paraglider silhouette -->
+            <path d="M310,55 L330,65 L310,70Z" fill="rgba(255,200,100,0.6)"/>
+            <line x1="320" y1="62" x2="325" y2="75" stroke="rgba(255,200,100,0.4)" stroke-width="1"/>
+            <!-- Tea estates pattern -->
+            <g opacity="0.4">
+              <rect x="50" y="120" width="8" height="6" rx="2" fill="#1a4d2e"/>
+              <rect x="62" y="118" width="8" height="6" rx="2" fill="#1a4d2e"/>
+              <rect x="74" y="121" width="8" height="6" rx="2" fill="#1a4d2e"/>
+              <rect x="86" y="119" width="8" height="6" rx="2" fill="#1a4d2e"/>
+            </g>
+          </svg>
+        </div>
+        <div class="tc-tag weekend">🌄 Weekend</div>
+        <div class="tc-price-badge">₹ 1,200</div>
+      </div>
+      <div class="trip-card-body">
+        <div class="tc-destination">Vagamon Hills</div>
+        <div class="tc-depot">🚌 Kottayam Central Depot</div>
+        <div class="tc-meta">
+          <span class="tc-meta-item">📅 2 Days</span>
+          <span class="tc-meta-item">⛰️ Hill Station</span>
+          <span class="tc-meta-item">⏰ 6:30 AM</span>
+        </div>
+        <div class="tc-actions">
+          <button class="btn-secondary">View Details</button>
+          <button class="btn-primary">How to Go →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3: Bekal Beach -->
+    <div class="trip-card">
+      <div class="trip-card-img">
+        <div class="tc-img-bg">
+          <svg width="100%" height="100%" viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="g3sky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ff7043"/>
+                <stop offset="40%" stop-color="#ffa270"/>
+                <stop offset="100%" stop-color="#0077a8"/>
+              </linearGradient>
+              <linearGradient id="g3sea" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0077a8"/>
+                <stop offset="100%" stop-color="#004d6e"/>
+              </linearGradient>
+            </defs>
+            <rect width="400" height="110" fill="url(#g3sky)"/>
+            <rect y="100" width="400" height="60" fill="url(#g3sea)"/>
+            <!-- Sun -->
+            <circle cx="320" cy="45" r="22" fill="rgba(255,220,80,0.9)"/>
+            <circle cx="320" cy="45" r="16" fill="rgba(255,200,50,0.9)"/>
+            <!-- Sun reflection -->
+            <rect x="300" y="100" width="40" height="60" fill="rgba(255,200,80,0.15)"/>
+            <!-- Waves -->
+            <path d="M0,115 C40,108 80,118 120,112 C160,106 200,116 240,110 C280,104 320,113 360,107 C380,104 395,110 400,108 L400,160 L0,160Z" fill="rgba(255,255,255,0.08)"/>
+            <!-- Fort silhouette -->
+            <rect x="40" y="75" width="80" height="40" fill="#1a2a1a" rx="2"/>
+            <rect x="38" y="65" width="10" height="15" fill="#1a2a1a"/>
+            <rect x="55" y="62" width="10" height="18" fill="#1a2a1a"/>
+            <rect x="72" y="60" width="10" height="20" fill="#1a2a1a"/>
+            <rect x="89" y="63" width="10" height="17" fill="#1a2a1a"/>
+            <rect x="106" y="66" width="10" height="14" fill="#1a2a1a"/>
+            <!-- Palm tree -->
+            <rect x="180" y="82" width="4" height="38" fill="#2d4a1e" rx="1"/>
+            <path d="M182,82 C170,70 160,78 165,88 C170,85 175,88 182,82Z" fill="#3d6b2a"/>
+            <path d="M182,82 C194,72 200,80 196,90 C190,87 186,88 182,82Z" fill="#4a8035"/>
+          </svg>
+        </div>
+        <div class="tc-tag budget">💚 Budget Pick</div>
+        <div class="tc-price-badge">₹ 750</div>
+      </div>
+      <div class="trip-card-body">
+        <div class="tc-destination">Bekal Beach & Fort</div>
+        <div class="tc-depot">🚌 Kasaragod Depot</div>
+        <div class="tc-meta">
+          <span class="tc-meta-item">📅 1 Day</span>
+          <span class="tc-meta-item">🌊 Beach</span>
+          <span class="tc-meta-item">⏰ 5:30 AM</span>
+        </div>
+        <div class="tc-actions">
+          <button class="btn-secondary">View Details</button>
+          <button class="btn-primary">How to Go →</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Notify Banner -->
+  <div class="notify-banner">
+    <h3>Get Notified for New Trips 🔔</h3>
+    <p>We'll ping you when trips from your depot open up — no spam, just trips.</p>
+    <div class="notify-input-row">
+      <input class="notify-input" type="text" placeholder="Your phone or email">
+      <button class="notify-btn">Notify</button>
+    </div>
+  </div>
+
+  <div class="bottom-pad"></div>
+</div>
+
+<!-- ========================= -->
+<!--      LISTING PAGE         -->
+<!-- ========================= -->
+<div id="page-listing" class="page">
+
+  <div class="demo-label">📋 Browse & Filter — Find trips that match your budget and depot</div>
+
+  <!-- Filter Panel -->
+  <div class="filter-panel" style="margin-top:10px;">
+    <h3>🎛️ Filters</h3>
+    <div class="filter-label">Budget Range</div>
+    <div class="budget-range">
+      <span style="font-size:12px;color:var(--text-soft);">₹500</span>
+      <input type="range" min="500" max="2000" value="1500" style="flex:1;">
+      <span style="font-size:12px;font-weight:600;color:var(--green-deep);">≤ ₹1500</span>
+    </div>
+    <div class="filter-label" style="margin-top:10px;">Trip Type</div>
+    <div class="filter-chips-wrap">
+      <button class="fc-chip active">All</button>
+      <button class="fc-chip">🌿 Nature</button>
+      <button class="fc-chip">⛰️ Hills</button>
+      <button class="fc-chip">🌊 Beach</button>
+      <button class="fc-chip">🛕 Pilgrimage</button>
+    </div>
+    <div class="filter-label" style="margin-top:10px;">Duration</div>
+    <div class="filter-chips-wrap">
+      <button class="fc-chip active">Any</button>
+      <button class="fc-chip">1 Day</button>
+      <button class="fc-chip">2 Days</button>
+    </div>
+    <div class="filter-label" style="margin-top:10px;">Starting Depot</div>
+    <div class="filter-chips-wrap">
+      <button class="fc-chip active">All Depots</button>
+      <button class="fc-chip">Kochi</button>
+      <button class="fc-chip">Trivandrum</button>
+      <button class="fc-chip">Thrissur</button>
+      <button class="fc-chip">Pathanamthitta</button>
+    </div>
+  </div>
+
+  <!-- Results Header -->
+  <div class="results-header">
+    <div class="results-count"><strong>12 trips</strong> found near you</div>
+    <button class="sort-btn">Sort: Price ↑</button>
+  </div>
+
+  <!-- Listing Cards -->
+  <div class="list-cards">
+
+    <div class="list-card" onclick="showPage('detail', document.querySelectorAll('.ps-btn')[2])">
+      <div class="lc-img">
+        <div class="lc-img-bg">
+          <svg width="100%" height="100%" viewBox="0 0 110 120" xmlns="http://www.w3.org/2000/svg">
+            <rect width="110" height="120" fill="#1f6b38"/>
+            <path d="M0,70 C20,45 50,60 80,45 C95,38 105,55 110,50 L110,120 L0,120Z" fill="#0d3320"/>
+            <polygon points="20,70 28,50 36,70" fill="#0d2a18"/>
+            <polygon points="70,65 78,44 86,65" fill="#0d2a18"/>
+          </svg>
+        </div>
+      </div>
+      <div class="lc-body">
+        <span class="lc-tag hill">🌿 Nature</span>
+        <div class="lc-title">Gavi Forest</div>
+        <div class="lc-depot">From <strong>Pathanamthitta</strong></div>
+        <div class="lc-bottom">
+          <div class="lc-price">₹850 <span>/person</span></div>
+          <div class="lc-dur">📅 1 Day</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="list-card">
+      <div class="lc-img">
+        <div class="lc-img-bg">
+          <svg width="100%" height="100%" viewBox="0 0 110 120" xmlns="http://www.w3.org/2000/svg">
+            <rect width="110" height="120" fill="#3a6b8a"/>
+            <path d="M0,80 C30,60 70,75 110,65 L110,120 L0,120Z" fill="#1e4d2b"/>
+          </svg>
+        </div>
+      </div>
+      <div class="lc-body">
+        <span class="lc-tag hill">⛰️ Hills</span>
+        <div class="lc-title">Vagamon Hills</div>
+        <div class="lc-depot">From <strong>Kottayam</strong></div>
+        <div class="lc-bottom">
+          <div class="lc-price">₹1,200 <span>/person</span></div>
+          <div class="lc-dur">📅 2 Days</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="list-card">
+      <div class="lc-img">
+        <div class="lc-img-bg">
+          <svg width="100%" height="100%" viewBox="0 0 110 120" xmlns="http://www.w3.org/2000/svg">
+            <rect width="110" height="80" fill="#ff7043" opacity="0.8"/>
+            <rect y="70" width="110" height="50" fill="#0077a8"/>
+            <circle cx="85" cy="35" r="18" fill="rgba(255,220,80,0.8)"/>
+          </svg>
+        </div>
+      </div>
+      <div class="lc-body">
+        <span class="lc-tag beach">🌊 Beach</span>
+        <div class="lc-title">Bekal Beach</div>
+        <div class="lc-depot">From <strong>Kasaragod</strong></div>
+        <div class="lc-bottom">
+          <div class="lc-price">₹750 <span>/person</span></div>
+          <div class="lc-dur">📅 1 Day</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="list-card">
+      <div class="lc-img">
+        <div class="lc-img-bg">
+          <svg width="110" height="120" viewBox="0 0 110 120" xmlns="http://www.w3.org/2000/svg">
+            <rect width="110" height="120" fill="#1a3a55"/>
+            <rect y="80" width="110" height="40" fill="#1e4d2b"/>
+            <!-- Temple gopuram -->
+            <polygon points="55,10 70,55 40,55" fill="#c8a96e"/>
+            <rect x="42" y="55" width="26" height="30" fill="#c8a96e"/>
+            <rect x="46" y="60" width="6" height="10" fill="#8b6914"/>
+            <rect x="58" y="60" width="6" height="10" fill="#8b6914"/>
+          </svg>
+        </div>
+      </div>
+      <div class="lc-body">
+        <span class="lc-tag pilgrim">🛕 Pilgrimage</span>
+        <div class="lc-title">Sabarimala Route</div>
+        <div class="lc-depot">From <strong>Ernakulam</strong></div>
+        <div class="lc-bottom">
+          <div class="lc-price">₹650 <span>/person</span></div>
+          <div class="lc-dur">📅 1 Day</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="list-card">
+      <div class="lc-img">
+        <div class="lc-img-bg">
+          <svg width="110" height="120" viewBox="0 0 110 120" xmlns="http://www.w3.org/2000/svg">
+            <rect width="110" height="120" fill="#2d6a47"/>
+            <path d="M0,60 C25,40 55,52 85,38 C100,30 110,42 110,40 L110,120 L0,120Z" fill="#1a3d2b"/>
+            <ellipse cx="55" cy="105" rx="40" ry="12" fill="rgba(100,160,130,0.4)"/>
+          </svg>
+        </div>
+      </div>
+      <div class="lc-body">
+        <span class="lc-tag hill">🌿 Nature</span>
+        <div class="lc-title">Munnar Hills</div>
+        <div class="lc-depot">From <strong>Ernakulam</strong></div>
+        <div class="lc-bottom">
+          <div class="lc-price">₹1,450 <span>/person</span></div>
+          <div class="lc-dur">📅 2 Days</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-pad"></div>
+</div>
+
+<!-- ========================= -->
+<!--    TRIP DETAIL PAGE       -->
+<!-- ========================= -->
+<div id="page-detail" class="page">
+
+  <!-- Hero -->
+  <div class="detail-hero">
+    <div class="detail-hero-bg">
+      <svg width="100%" height="100%" viewBox="0 0 430 280" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="dg1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#052210"/>
+            <stop offset="50%" stop-color="#0f4a28"/>
+            <stop offset="100%" stop-color="#2d8a50"/>
+          </linearGradient>
+          <radialGradient id="dg2" cx="70%" cy="30%">
+            <stop offset="0%" stop-color="rgba(255,220,100,0.25)"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+        </defs>
+        <rect width="430" height="280" fill="url(#dg1)"/>
+        <rect width="430" height="280" fill="url(#dg2)"/>
+        <!-- Atmospheric light shaft -->
+        <path d="M300,0 L380,0 L430,280 L280,280Z" fill="rgba(255,230,150,0.04)"/>
+        <!-- Far hills -->
+        <path d="M0,170 C50,120 110,155 170,130 C230,105 290,145 360,120 C400,107 430,130 430,120 L430,280 L0,280Z" fill="#052210" opacity="0.8"/>
+        <!-- Mid hills -->
+        <path d="M0,200 C70,175 140,195 210,178 C280,161 350,185 430,170 L430,280 L0,280Z" fill="#0a3320" opacity="0.9"/>
+        <!-- Foreground trees -->
+        <polygon points="30,200 44,165 58,200" fill="#052210"/>
+        <polygon points="38,188 50,158 62,188" fill="#0a3320"/>
+        <polygon points="360,195 375,160 390,195" fill="#052210"/>
+        <polygon points="370,183 382,153 394,183" fill="#0a3320"/>
+        <polygon points="140,205 153,172 166,205" fill="#052210"/>
+        <polygon points="148,193 159,163 170,193" fill="#0a3320"/>
+        <!-- Stars -->
+        <circle cx="50" cy="30" r="1.5" fill="rgba(255,255,255,0.6)"/>
+        <circle cx="200" cy="20" r="1" fill="rgba(255,255,255,0.5)"/>
+        <circle cx="350" cy="35" r="1.5" fill="rgba(255,255,255,0.6)"/>
+        <circle cx="120" cy="15" r="1" fill="rgba(255,255,255,0.4)"/>
+        <!-- Mist layers -->
+        <rect x="0" y="145" width="430" height="40" fill="rgba(255,255,255,0.04)"/>
+        <rect x="0" y="175" width="430" height="25" fill="rgba(255,255,255,0.03)"/>
+        <!-- Wildlife dot -->
+        <circle cx="210" cy="255" r="5" fill="#052210"/>
+        <ellipse cx="210" cy="256" rx="8" ry="4" fill="#052210" opacity="0.7"/>
+      </svg>
+    </div>
+    <button class="detail-back" onclick="showPage('listing', document.querySelectorAll('.ps-btn')[1])">←</button>
+    <button class="detail-share">↗</button>
+    <div class="detail-hero-content">
+      <h1>Gavi Forest<br>1-Day KSRTC Trip</h1>
+      <div class="detail-pills">
+        <span class="detail-pill">🌿 Nature / Wildlife</span>
+        <span class="detail-pill">📅 1 Day</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Price Strip -->
+  <div class="price-strip">
+    <div>
+      <div class="ps-price">₹850 <sub>per person</sub></div>
+      <div style="font-size:12px;color:var(--text-soft);margin-top:2px;">Includes transport + entry permit</div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <div class="ps-badge">
+        <span class="val">5:00 AM</span>
+        <span class="lbl">Departure</span>
+      </div>
+      <div class="ps-badge">
+        <span class="val">~8 PM</span>
+        <span class="lbl">Return</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-label">⭐ Most important page — This is the "decision page" that KSRTC currently lacks</div>
+
+  <!-- How This Trip Works (MOST CRITICAL SECTION) -->
+  <div class="detail-section">
+    <h2>How This Trip Works</h2>
+    <div class="how-works-box">
+      <div class="hw-row">
+        <div class="hw-icon green">🚌</div>
+        <div class="hw-text">
+          <label>Starts from</label>
+          <p>Pathanamthitta KSRTC Depot</p>
+          <div class="hw-sub">Near Civil Station, Pathanamthitta</div>
+        </div>
+      </div>
+      <div class="hw-row">
+        <div class="hw-icon amber">⏰</div>
+        <div class="hw-text">
+          <label>Departure</label>
+          <p>5:00 AM sharp — please arrive by 4:45 AM</p>
+          <div class="hw-sub">Bus will not wait. Arrive early.</div>
+        </div>
+      </div>
+      <div class="hw-row">
+        <div class="hw-icon green">🗓️</div>
+        <div class="hw-text">
+          <label>Trip runs on</label>
+          <p>Every Saturday & Sunday</p>
+          <div class="hw-sub">+ selected holidays. Schedule may vary — confirm with depot.</div>
+        </div>
+      </div>
+      <div class="hw-row">
+        <div class="hw-icon blue">💳</div>
+        <div class="hw-text">
+          <label>How to Book</label>
+          <p>KSRTC portal online <strong>or</strong> walk-in at depot</p>
+          <div class="hw-sub">No advance booking needed for walk-in on most dates</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:14px;">
+      <div style="font-size:12px;font-weight:700;color:var(--text-soft);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Book via</div>
+      <div class="booking-opts">
+        <div class="booking-opt">
+          <div class="booking-opt-icon">🌐</div>
+          <div class="booking-opt-text">
+            <label>Online</label>
+            <p>KSRTC Official Booking Portal</p>
+          </div>
+          <span class="booking-opt-arrow">→</span>
+        </div>
+        <div class="booking-opt">
+          <div class="booking-opt-icon">🏢</div>
+          <div class="booking-opt-text">
+            <label>In-Person</label>
+            <p>Pathanamthitta Depot Counter</p>
+          </div>
+          <span class="booking-opt-arrow">→</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Itinerary -->
+  <div class="detail-section">
+    <h2>Trip Itinerary</h2>
+    <div class="itinerary">
+      <div class="itin-item">
+        <div class="itin-dot"></div>
+        <div class="itin-time">5:00 AM</div>
+        <div class="itin-title">Departure — Pathanamthitta Depot</div>
+        <div class="itin-desc">KSRTC bus departs. Comfortable seating. Bring snacks for the ride.</div>
+      </div>
+      <div class="itin-item">
+        <div class="itin-dot"></div>
+        <div class="itin-time">8:30 AM</div>
+        <div class="itin-title">Reach Gavi Forest Gate</div>
+        <div class="itin-desc">Forest entry check. Permits handled by trip coordinator.</div>
+      </div>
+      <div class="itin-item">
+        <div class="itin-dot"></div>
+        <div class="itin-time">9:00 AM – 1:00 PM</div>
+        <div class="itin-title">Forest Walk & Wildlife Spotting</div>
+        <div class="itin-desc">Guided walk along the Gavi reservoir. Elephant & Gaur sightings common in morning hours.</div>
+      </div>
+      <div class="itin-item">
+        <div class="itin-dot"></div>
+        <div class="itin-time">1:00 PM</div>
+        <div class="itin-title">Lunch Break</div>
+        <div class="itin-desc">Packed lunch provided OR stop at the forest canteen. Vegetarian only inside forest.</div>
+      </div>
+      <div class="itin-item">
+        <div class="itin-dot"></div>
+        <div class="itin-time">2:00 – 5:00 PM</div>
+        <div class="itin-title">Gavi Dam Viewpoint & Boating</div>
+        <div class="itin-desc">Optional boating (₹100 extra, pay on the spot). Scenic walk around the dam.</div>
+      </div>
+      <div class="itin-item">
+        <div class="itin-dot"></div>
+        <div class="itin-time">5:30 PM</div>
+        <div class="itin-title">Return Journey</div>
+        <div class="itin-desc">Bus departs for Pathanamthitta.</div>
+      </div>
+      <div class="itin-item">
+        <div class="itin-dot"></div>
+        <div class="itin-time">~8:00 PM</div>
+        <div class="itin-title">Reach Pathanamthitta Depot</div>
+        <div class="itin-desc">Trip ends. Travel time may vary based on road conditions.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Highlights -->
+  <div class="detail-section">
+    <h2>Trip Highlights</h2>
+    <div class="highlights-grid">
+      <div class="highlight-chip">
+        <span class="hl-icon">🐘</span>
+        <span class="hl-text">Wildlife Spotting</span>
+      </div>
+      <div class="highlight-chip">
+        <span class="hl-icon">🌊</span>
+        <span class="hl-text">Gavi Dam View</span>
+      </div>
+      <div class="highlight-chip">
+        <span class="hl-icon">🌿</span>
+        <span class="hl-text">Scenic Forest Drive</span>
+      </div>
+      <div class="highlight-chip">
+        <span class="hl-icon">🚣</span>
+        <span class="hl-text">Optional Boating</span>
+      </div>
+      <div class="highlight-chip">
+        <span class="hl-icon">📸</span>
+        <span class="hl-text">Photography Spots</span>
+      </div>
+      <div class="highlight-chip">
+        <span class="hl-icon">🍃</span>
+        <span class="hl-text">Western Ghats Air</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Who is it for -->
+  <div class="detail-section">
+    <h2>Who Is This For?</h2>
+    <ul class="who-list">
+      <li class="who-item"><span class="who-icon">✅</span> College students & groups</li>
+      <li class="who-item"><span class="who-icon">✅</span> Solo budget travelers</li>
+      <li class="who-item"><span class="who-icon">✅</span> Nature & wildlife enthusiasts</li>
+      <li class="who-item"><span class="who-icon">✅</span> First-time trekkers (easy walking, no trekking needed)</li>
+      <li class="who-item"><span class="who-icon">❌</span> Not ideal for luxury seekers</li>
+      <li class="who-item"><span class="who-icon">❌</span> Not recommended for toddlers / elderly with mobility issues</li>
+    </ul>
+  </div>
+
+  <!-- Trust Section -->
+  <div class="detail-section">
+    <h2>Traveler Feedback</h2>
+    <div class="trust-box">
+      <div class="trust-count">130+</div>
+      <div class="trust-text">people took this trip last month. Most rated it <strong>4.2/5</strong> for value.</div>
+    </div>
+    <div class="trust-photos">
+      <div class="trust-photo">
+        <div class="trust-photo-bg">
+          <svg width="72" height="56" viewBox="0 0 72 56" xmlns="http://www.w3.org/2000/svg">
+            <rect width="72" height="56" fill="#1f6b38"/>
+            <path d="M0,35 C15,20 35,30 55,20 C65,15 72,25 72,22 L72,56 L0,56Z" fill="#0d3320"/>
+            <circle cx="54" cy="14" r="8" fill="rgba(255,220,80,0.7)"/>
+          </svg>
+        </div>
+      </div>
+      <div class="trust-photo">
+        <div class="trust-photo-bg">
+          <svg width="72" height="56" viewBox="0 0 72 56" xmlns="http://www.w3.org/2000/svg">
+            <rect width="72" height="56" fill="#0d4a38"/>
+            <ellipse cx="36" cy="40" rx="25" ry="15" fill="rgba(100,180,150,0.4)"/>
+            <path d="M0,30 C20,15 50,25 72,18 L72,56 L0,56Z" fill="#052210"/>
+            <polygon points="15,30 22,12 29,30" fill="#052210"/>
+          </svg>
+        </div>
+      </div>
+      <div class="trust-photo">
+        <div class="trust-photo-bg">
+          <svg width="72" height="56" viewBox="0 0 72 56" xmlns="http://www.w3.org/2000/svg">
+            <rect width="72" height="40" fill="#3a6b8a"/>
+            <rect y="35" width="72" height="21" fill="#1e4d2b"/>
+            <circle cx="55" cy="18" r="12" fill="rgba(255,220,80,0.6)"/>
+            <rect x="0" y="35" width="72" height="5" fill="rgba(255,255,255,0.1)"/>
+          </svg>
+        </div>
+      </div>
+      <div class="trust-photo">
+        <div class="trust-photo-bg">
+          <svg width="72" height="56" viewBox="0 0 72 56" xmlns="http://www.w3.org/2000/svg">
+            <rect width="72" height="56" fill="#1a5c30"/>
+            <path d="M0,40 C20,28 45,38 72,30 L72,56 L0,56Z" fill="#0a2e18"/>
+            <polygon points="30,40 38,20 46,40" fill="#0a2e18"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA Section -->
+  <div class="cta-section">
+    <div style="font-family:'Fraunces',serif;font-size:18px;color:var(--green-deep);margin-bottom:4px;">Ready to go?</div>
+    <div style="font-size:12.5px;color:var(--text-soft);margin-bottom:16px;line-height:1.5;">We don't handle booking — we connect you directly to where it happens.</div>
+    <button class="cta-primary-btn">🌐 Go to KSRTC Booking Portal</button>
+    <button class="cta-secondary-btn">🏢 View Depot Contact / Bus Details</button>
+    <button class="cta-whatsapp-btn">💬 Message Depot on WhatsApp</button>
+    <div class="cta-note">This platform does not process payments or reservations.<br>All booking is done via official KSRTC channels.</div>
+    <div class="notify-detail">
+      <p><strong>Trip not available today?</strong><br>Get notified when Gavi trips from Pathanamthitta open again.</p>
+      <div class="notify-input-row">
+        <input class="notify-input" type="text" placeholder="Your phone or email">
+        <button class="notify-btn">Notify Me</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-pad"></div>
+</div>
+
+<!-- Bottom Nav -->
+<div class="bottom-nav">
+  <button class="bn-item active" onclick="showPage('home', document.querySelectorAll('.ps-btn')[0])" id="bn-home">
+    <span class="bn-icon">🏠</span>
+    <span class="bn-label">Home</span>
+  </button>
+  <button class="bn-item" onclick="showPage('listing', document.querySelectorAll('.ps-btn')[1])" id="bn-listing">
+    <span class="bn-icon">🔍</span>
+    <span class="bn-label">Browse</span>
+  </button>
+  <button class="bn-item" onclick="showPage('detail', document.querySelectorAll('.ps-btn')[2])" id="bn-detail">
+    <span class="bn-icon">📄</span>
+    <span class="bn-label">Trip</span>
+  </button>
+  <button class="bn-item" id="bn-notify">
+    <span class="bn-icon">🔔</span>
+    <span class="bn-label">Notify</span>
+  </button>
+</div>
+
+<script>
+  function showPage(pageId, btnEl) {
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.ps-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.bn-item').forEach(b => b.classList.remove('active'));
+    // Show target
+    document.getElementById('page-' + pageId).classList.add('active');
+    if (btnEl) btnEl.classList.add('active');
+    // Bottom nav
+    const bnMap = { home: 'bn-home', listing: 'bn-listing', detail: 'bn-detail' };
+    if (bnMap[pageId]) document.getElementById(bnMap[pageId]).classList.add('active');
+    // Scroll to top
+    window.scrollTo(0, 0);
+  }
+
+  // Filter chip interaction
+  document.querySelectorAll('.filter-chips-wrap').forEach(wrap => {
+    wrap.querySelectorAll('.fc-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        wrap.querySelectorAll('.fc-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+      });
+    });
+  });
+
+  // Filter chips in listing filter bar
+  document.querySelectorAll('.filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      chip.classList.toggle('active');
+    });
+  });
+</script>
+</body>
+</html>
